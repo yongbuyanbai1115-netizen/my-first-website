@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>成绩条工作台</title><style>*{box-sizing:border-box}body{margin:0;background:#eff4f2;color:#172d2a;font:1rem/1.5 "Microsoft YaHei",system-ui,sans-serif}.bar{display:flex;justify-content:space-between;padding:16px max(24px,calc((100% - 1160px)/2));background:#173b35;color:#fff}.bar span{color:#d4e6de}.brand{font-weight:700}main{max-width:1208px;margin:auto;padding:32px 24px}.intro{margin-bottom:24px}h1,h2,p{margin:0}h1{font-size:clamp(1.8rem,4vw,2.65rem);line-height:1.2;margin-bottom:8px}h2{font-size:1.15rem}.intro p,.hint,#status{color:#49645c}.workspace{display:grid;grid-template-columns:290px minmax(0,1fr);gap:20px;align-items:start}.controls,.preview{background:white;border:1px solid #d3e1db;border-radius:14px}.controls{padding:20px;display:grid;gap:12px}.controls a{color:#155b4b}.controls input[type=text]{width:100%;border:1px solid #adbbb5;border-radius:7px;padding:10px;font:inherit}.upload{border:1px dashed #5a8978;border-radius:8px;padding:14px;display:grid;background:#f4faf7;cursor:pointer}.upload span,.hint{font-size:.875rem}#file{max-width:100%;font:inherit;font-size:.875rem}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px;border-bottom:1px solid #d3e1db}button{font:inherit;font-weight:650;padding:9px 14px;border:1px solid #20624f;border-radius:8px;background:#20624f;color:white;cursor:pointer}button:disabled{opacity:.5;cursor:default}.secondary{background:white;color:#20624f}#empty,#error{padding:24px}#error{color:#922b26;white-space:pre-line}#slips:not(:empty){padding:16px;display:grid;gap:12px}.slip{border:1px dashed #84978e;padding:10px;overflow-wrap:anywhere}.slip h3{margin:0 0 4px;font-size:1rem}.identity{margin-bottom:5px}.slip table{border-collapse:collapse;width:100%;table-layout:fixed;text-align:center}.slip td,.slip th{border:1px solid #afbdb7;padding:3px 2px;font-size:.875rem;overflow-wrap:anywhere}.score-scroll{overflow-x:auto}.slip table{min-width:380px}@media(max-width:720px){.workspace{grid-template-columns:1fr}.toolbar{flex-wrap:wrap}}
+@page{size:A4 portrait;margin:10mm}@media print{body{background:white;color:black}.bar,.intro,.controls,.toolbar,#empty,#error{display:none!important}main{max-width:none;padding:0}.workspace,.preview{display:block;border:0}.preview{border-radius:0}#slips:not(:empty){display:block;padding:0}.slip{break-inside:avoid;page-break-inside:avoid;margin:0 0 2mm;padding:2mm;border-color:#444}.slip h3,.identity{font-size:10pt}.slip td,.slip th{font-size:9pt;border-color:#777}.slip table{min-width:0}.score-scroll{overflow:visible}}
+</style></head>
+<body><header class="bar"><div class="brand">成绩条工作台</div><span>单次考试</span></header>
+<main><div class="intro"><h1>生成全班成绩条</h1><p>导入 Excel，预览后按 A4 纸打印。成绩表只在当前浏览器处理。</p></div>
+<div class="workspace"><section class="controls" aria-labelledby="settings"><h2 id="settings">导入设置</h2>
+<label for="heading">成绩条标题</label><input id="heading" type="text" maxlength="60" value="班级考试成绩单">
+<label class="upload" for="file"><strong>选择 Excel 文件</strong><span>.xlsx 格式</span></label><input id="file" type="file" accept=".xlsx">
+<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,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" download="成绩条_虚构样表.xlsx">下载 Excel 样表</a><button type="button" id="example" class="secondary">载入 45 人示例</button>
+<p class="hint">第一行填写表头，每行一位学生。姓名必填，学号建议设为文本。使用样表时，请先删掉示例数据。</p>
+</section><section class="preview" aria-labelledby="preview-title"><div class="toolbar"><div><h2 id="preview-title">打印预览</h2><p id="status" role="status">等待导入成绩表</p></div><button type="button" id="print" disabled>打印 / 另存 PDF</button></div><p id="error" role="alert" hidden></p><div id="empty">选择成绩表，或载入示例查看打印效果。</div><div id="slips"></div></section></div></main><script>const decoder = new TextDecoder();
+const tags = (node, name) => Array.from(node.getElementsByTagNameNS("*", name));
+const xml = (bytes) => {
+  const doc = new DOMParser().parseFromString(decoder.decode(bytes), "application/xml");
+  if (doc.querySelector("parsererror")) throw Error("Excel 文件内部格式有误。");
+  return doc;
+};
+function zipEntries(buffer) {
+  const view = new DataView(buffer);
+  const u16 = (offset) => view.getUint16(offset, true);
+  const u32 = (offset) => view.getUint32(offset, true);
+  let end = buffer.byteLength - 22;
+  while (end >= Math.max(0, buffer.byteLength - 65557)) {
+    if (u32(end) === 0x06054b50 && end + 22 + u16(end + 20) === buffer.byteLength) break;
+    end--;
+  }
+  if (end < Math.max(0, buffer.byteLength - 65557)) throw Error("无法打开文件，请重新保存为 .xlsx 后重试。");
+  const entries = new Map();
+  let cursor = u32(end + 16);
+  for (let i = 0; i < u16(end + 10); i++) {
+    if (u32(cursor) !== 0x02014b50) throw Error("Excel 文件目录有误。");
+    const nameLength = u16(cursor + 28);
+    const name = decoder.decode(new Uint8Array(buffer, cursor + 46, nameLength));
+    entries.set(name, { method: u16(cursor + 10), size: u32(cursor + 20), expanded: u32(cursor + 24), local: u32(cursor + 42) });
+    cursor += 46 + nameLength + u16(cursor + 30) + u16(cursor + 32);
+  }
+  return async (name) => {
+    const entry = entries.get(name);
+    if (!entry) return null;
+    const { method, size, expanded, local } = entry;
+    if (expanded > 24 * 1024 * 1024 || u32(local) !== 0x04034b50) throw Error("工作表过大或文件已损坏。");
+    const start = local + 30 + u16(local + 26) + u16(local + 28);
+    const bytes = new Uint8Array(buffer, start, size);
+    if (method === 0) return xml(bytes);
+    if (method !== 8) throw Error("请先用 Excel 将文件另存为普通 .xlsx。");
+    const reader = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("deflate-raw")).getReader();
+    const chunks = [];
+    let length = 0;
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      length += value.length;
+      if (length > expanded) {
+        await reader.cancel();
+        throw Error("工作表解压后大小有误。");
+      }
+      chunks.push(value);
+    }
+    return xml(await new Blob(chunks).arrayBuffer());
+  };
+}
+const textRuns = (node) => tags(node, "t").filter((item) => item.parentElement.localName !== "rPh").map((item) => item.textContent).join("");
+async function readWorkbook(buffer) {
+  const read = zipEntries(buffer);
+  const book = await read("xl/workbook.xml");
+  const relationships = await read("xl/_rels/workbook.xml.rels");
+  if (!book || !relationships) throw Error("找不到 Excel 工作簿。");
+  const sheets = tags(book, "sheet");
+  const selected = sheets.find((sheet) => sheet.getAttribute("name") === "成绩") ??
+    sheets.find((sheet) => sheet.getAttribute("state") !== "hidden" && !/说明/.test(sheet.getAttribute("name")));
+  if (!selected) throw Error("找不到成绩工作表。");
+  const id = Array.from(selected.attributes).find((attr) => attr.localName === "id")?.value;
+  const relation = tags(relationships, "Relationship").find((item) => item.getAttribute("Id") === id);
+  const target = relation?.getAttribute("Target");
+  if (!target || relation.getAttribute("TargetMode") === "External") throw Error("无法读取成绩工作表。");
+  const path = new URL(target, "https://workbook.invalid/xl/workbook.xml").pathname.slice(1);
+  const [sheet, strings, styles] = await Promise.all([read(path), read("xl/sharedStrings.xml"), read("xl/styles.xml")]);
+  if (!sheet) throw Error("无法读取成绩工作表。");
+  const dictionary = strings ? tags(strings, "si").map(textRuns) : [];
+  const cellFormats = styles ? Array.from(tags(styles, "cellXfs")[0]?.children ?? []) : [];
+  const formats = new Map((styles ? tags(styles, "numFmt") : []).map((item) => [item.getAttribute("numFmtId"), item.getAttribute("formatCode")]));
+  return tags(sheet, "row").map((row) => ({
+    number: Number(row.getAttribute("r")),
+    cells: new Map(tags(row, "c").map((cell) => {
+      const address = cell.getAttribute("r");
+      const raw = tags(cell, "v")[0]?.textContent ?? "";
+      const type = cell.getAttribute("t");
+      const value = type === "s" ? dictionary[Number(raw)] ?? "" : type === "inlineStr" ? textRuns(cell) : raw;
+      const format = formats.get(cellFormats[Number(cell.getAttribute("s"))]?.getAttribute("numFmtId"));
+      return [address.replace(/\d+$/, ""), {
+        value: value.trim(),
+        invalid: type === "e" || type === "b" || (!raw && tags(cell, "f").length > 0),
+        display: /^0{2,}$/.test(format ?? "") && /^\d+$/.test(value) ? value.padStart(format.length, "0") : value.trim()
+      }];
+    }))
+  }));
+}
+
+
+const subjects = ["语文","数学","英语","物理","化学","生物","政治","历史","地理"];
+const scores = [...subjects, "总分"];
+const get = (id) => document.getElementById(id);
+let current;
+let request = 0;
+function readRecords(rows) {
+  const headers = rows.find((row) => row.number === 1)?.cells ?? new Map();
+  const columns = new Map();
+  for (const [column, cell] of headers) {
+    if (![...scores, "学号", "姓名"].includes(cell.value)) continue;
+    if (columns.has(cell.value)) throw Error(`第 1 行存在重复表头「${cell.value}」。`);
+    columns.set(cell.value, column);
+  }
+  if (!columns.has("姓名")) throw Error("第 1 行缺少「姓名」表头。");
+  const visibleScores = scores.filter((field) => columns.has(field));
+  if (!visibleScores.some((field) => subjects.includes(field))) throw Error("第 1 行至少需要一个首版支持的科目表头，例如「语文」。");
+  const records = [];
+  const errors = [];
+  for (const row of rows.filter((item) => item.number > 1)) {
+    if (![...row.cells.values()].some((cell) => cell.value || cell.invalid)) continue;
+    const lookup = (field) => row.cells.get(columns.get(field));
+    const name = lookup("姓名");
+    const id = lookup("学号");
+    if (!name?.value || name.invalid) errors.push(`第 ${row.number} 行「姓名」为空或无法读取。`);
+    if (id?.invalid) errors.push(`第 ${row.number} 行「学号」无法读取。`);
+    const values = visibleScores.map((field) => {
+      const cell = lookup(field);
+      if (cell?.invalid || (cell?.value && !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i.test(cell.value))) {
+        errors.push(`第 ${row.number} 行「${field}」应为数字或留空。`);
+      }
+      return cell?.value ?? "";
+    });
+    records.push({ name: name?.value ?? "", id: id?.display ?? "", values });
+  }
+  if (errors.length) throw Error(errors.slice(0, 8).join("\n") + (errors.length > 8 ? `\n共 ${errors.length} 处问题。` : ""));
+  if (!records.length) throw Error("表头下没有学生记录。");
+  return { visibleScores, records };
+}
+function element(tag, value, className) {
+  const node = document.createElement(tag);
+  if (value !== undefined) node.textContent = value;
+  if (className) node.className = className;
+  return node;
+}
+function render(data) {
+  const fragment = document.createDocumentFragment();
+  for (const student of data.records) {
+    const slip = element("article", undefined, "slip");
+    const identity = element("p", student.id ? `${student.name}　学号 ${student.id}` : student.name, "identity");
+    const table = element("table");
+    const header = table.createTHead().insertRow();
+    for (const field of data.visibleScores) {
+      const cell = element("th", field);
+      cell.scope = "col";
+      header.append(cell);
+    }
+    const values = table.createTBody().insertRow();
+    for (const score of student.values) values.insertCell().textContent = score;
+    const scroll = element("div", undefined, "score-scroll");
+    scroll.append(table);
+    slip.append(element("h3", get("heading").value.trim() || "班级考试成绩单"), identity, scroll);
+    fragment.append(slip);
+  }
+  get("slips").replaceChildren(fragment);
+  get("empty").hidden = true;
+  get("print").disabled = false;
+  get("status").textContent = `${data.records.length} 位学生 · A4 纵向`;
+}
+async function load(read) {
+  const ticket = ++request;
+  current = null;
+  get("slips").replaceChildren();
+  get("empty").hidden = true;
+  get("error").hidden = true;
+  get("print").disabled = true;
+  get("status").textContent = "正在读取成绩表…";
+  try {
+    const rows = await readWorkbook(await read());
+    if (ticket !== request) return;
+    current = readRecords(rows);
+    render(current);
+  } catch (error) {
+    if (ticket !== request) return;
+    get("status").textContent = "导入失败";
+    get("error").textContent = error instanceof RangeError ? "文件已损坏，请重新保存为 .xlsx。" : error.message;
+    get("error").hidden = false;
+  }
+}
+get("file").addEventListener("change", (event) => {
+  const [file] = event.target.files;
+  if (!file) return;
+  event.target.value = "";
+  load(() => {
+    if (!/\.xlsx$/i.test(file.name)) throw Error("请选择 .xlsx 文件。");
+    if (file.size > 15 * 1024 * 1024) throw Error("请使用小于 15 MB 的成绩表。");
+    return file.arrayBuffer();
+  });
+});
+get("example").addEventListener("click", () => load(() => Uint8Array.from(atob("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"), (letter) => letter.charCodeAt(0)).buffer));
+get("heading").addEventListener("input", () => {
+  for (const heading of get("slips").querySelectorAll("h3")) heading.textContent = get("heading").value.trim() || "班级考试成绩单";
+});
+get("print").addEventListener("click", () => window.print());
+</script></body></html>
+

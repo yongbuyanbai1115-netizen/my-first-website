@@ -1,0 +1,6 @@
+/private/
+/.wrangler/
+/.vercel/
+/node_modules/
+.env*
+*.sqlite*

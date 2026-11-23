@@ -1,0 +1,20 @@
+{
+  "name": "grade-slips",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-23",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "d1_databases": [
+    {
+      "binding": "ACTIVATION",
+      "database_name": "grade-slips-activation",
+      "database_id": "00000000-0000-0000-0000-000000000000"
+    }
+  ],
+  "triggers": { "crons": ["17 3 * * *"] }
+}
+

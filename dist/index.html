@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>成绩条工作台</title><link rel="stylesheet" href="style.css"><script src="app.js" type="module"></script></head>
+<body><header class="bar"><div class="brand">成绩条工作台</div><span>单次考试</span></header>
+<main><div class="intro"><h1>生成全班成绩条</h1><p>导入 Excel，预览后按 A4 纸打印。成绩表只在当前浏览器处理。</p></div>
+<div class="workspace"><section class="controls" aria-labelledby="settings"><h2 id="settings">导入设置</h2>
+<label for="heading">成绩条标题</label><input id="heading" type="text" maxlength="60" value="班级考试成绩单">
+<label class="upload" for="file"><strong>选择 Excel 文件</strong><span>.xlsx 格式</span></label><input id="file" type="file" accept=".xlsx">
+<a href="template.xlsx" download="成绩条_虚构样表.xlsx">下载 Excel 样表</a><button type="button" id="example" class="secondary">载入 45 人示例</button>
+<p class="hint">第一行填写表头，每行一位学生。姓名必填，学号建议设为文本。使用样表时，请先删掉示例数据。</p>
+</section><section class="preview" aria-labelledby="preview-title"><div class="toolbar"><div><h2 id="preview-title">打印预览</h2><p id="status" role="status">等待导入成绩表</p></div><button type="button" id="print" disabled>打印 / 另存 PDF</button></div><p id="error" role="alert" hidden></p><div id="empty">选择成绩表，或载入示例查看打印效果。</div><div id="slips"></div></section></div></main></body></html>
